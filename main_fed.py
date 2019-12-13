@@ -14,7 +14,7 @@ from utils.sampling import mnist_iid, mnist_noniid, cifar_iid
 from utils.options import args_parser
 from models.Update import LocalUpdate
 from models.Nets import MLP, CNNMnist, CNNCifar
-from models.Fed import FedAvg
+from models.Fed import FedAvg,FedAvg_weighted
 from models.test import test_img
 
 
@@ -83,7 +83,7 @@ if __name__ == '__main__':
             w_locals.append(copy.deepcopy(w))
             loss_locals.append(copy.deepcopy(loss))
         # update global weights
-        w_glob = FedAvg(w_locals)
+        w_glob = FedAvg_weighted(w_locals,loss_locals)
 
         # copy weight to net_glob
         net_glob.load_state_dict(w_glob)
