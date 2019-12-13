@@ -59,6 +59,7 @@ if __name__ == '__main__':
         exit('Error: unrecognized model')
     print(net_glob)
     net_glob.train()
+    net_glob.zero_grad()
 
     # copy weights
     w_glob = net_glob.state_dict()
@@ -73,8 +74,9 @@ if __name__ == '__main__':
 
     for iter in range(args.epochs):
         w_locals, loss_locals = [], []
-        m = max(int(args.frac * args.num_users), 1)
-        idxs_users = np.random.choice(range(args.num_users), m, replace=False)
+        #m = max(int(args.frac * args.num_users), 1)
+        #idxs_users = np.random.choice(range(args.num_users), m, replace=False)
+        idxs_users=np.arange(args.num_users)
         for idx in idxs_users:
             local = LocalUpdate(args=args, dataset=dataset_train, idxs=dict_users[idx])
             w, loss = local.train(net=copy.deepcopy(net_glob).to(args.device))
